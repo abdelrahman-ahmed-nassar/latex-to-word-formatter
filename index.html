@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaTeX Formatter</title>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+
+  <!-- marked.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <span class="app-title">LaTeX Formatter</span>
+      <div class="toolbar">
+        <button id="btn-render" class="btn btn-primary">▶ Render</button>
+        <button id="btn-copy"   class="btn">⎘ Copy</button>
+        <button id="btn-pdf"    class="btn">⬇ Export PDF</button>
+        <button id="btn-clear"  class="btn btn-danger">✕ Clear</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="status-bar" class="status-bar hidden"></div>
+
+  <main class="workspace">
+    <section class="pane pane-input">
+      <div class="pane-label">Input</div>
+      <textarea
+        id="input"
+        placeholder="Paste AI-generated text here. Supports markdown and LaTeX:&#10;&#10;Inline: $E = mc^2$&#10;Block:&#10;$$Q_{next} = S + R'Q$$"
+        spellcheck="false"
+      ></textarea>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="pane pane-preview">
+      <div class="pane-label">Preview</div>
+      <div id="preview" class="preview-content">
+        <p class="placeholder-hint">Rendered output will appear here.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+/* ── Reset & base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  background: #f5f4f0;
+  color: #1a1a1a;
+}
+
+/* ── Header / toolbar ──────────────────────────────────── */
+header {
+  background: #1a1a1a;
+  color: #f5f4f0;
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid #333;
+}
+
+.header-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.app-title {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #c8c4b8;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border: 1.5px solid #555;
+  border-radius: 3px;
+  background: #2a2a2a;
+  color: #ddd;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: #3a3a3a;
+  border-color: #888;
+  color: #fff;
+}
+
+.btn:active {
+  background: #111;
+}
+
+.btn.btn-primary {
+  background: #2c4a8c;
+  border-color: #3a5fa8;
+  color: #fff;
+}
+
+.btn.btn-primary:hover {
+  background: #3457a6;
+  border-color: #5577cc;
+}
+
+.btn.btn-danger {
+  background: #6b2020;
+  border-color: #8a3030;
+  color: #fcc;
+}
+
+.btn.btn-danger:hover {
+  background: #862626;
+  border-color: #aa4040;
+  color: #fff;
+}
+
+/* ── Status bar ────────────────────────────────────────── */
+.status-bar {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  padding: 5px 20px;
+  background: #e8f5e9;
+  border-bottom: 1px solid #b2dfdb;
+  color: #2e7d32;
+  transition: opacity 0.3s;
+}
+
+.status-bar.error {
+  background: #fdecea;
+  border-color: #f5c6cb;
+  color: #b71c1c;
+}
+
+.status-bar.hidden {
+  display: none;
+}
+
+/* ── Workspace layout ──────────────────────────────────── */
+.workspace {
+  display: flex;
+  height: calc(100vh - 50px);
+  overflow: hidden;
+}
+
+.pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pane-label {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  background: #eceae4;
+  border-bottom: 1px solid #d0cfc8;
+  padding: 5px 14px;
+  user-select: none;
+}
+
+/* ── Divider ───────────────────────────────────────────── */
+.divider {
+  width: 4px;
+  background: #d0cfc8;
+  cursor: col-resize;
+  flex-shrink: 0;
+}
+
+/* ── Input textarea ────────────────────────────────────── */
+.pane-input textarea {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  border: none;
+  outline: none;
+  resize: none;
+  background: #fafaf8;
+  color: #1a1a1a;
+  border-right: 1px solid #d0cfc8;
+}
+
+.pane-input textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ── Preview area ──────────────────────────────────────── */
+.pane-preview {
+  background: #fff;
+}
+
+.preview-content {
+  flex: 1;
+  padding: 24px 28px;
+  overflow-y: auto;
+  line-height: 1.75;
+  font-size: 15px;
+  height: calc(100vh - 50px - 28px); /* subtract header + label */
+}
+
+.placeholder-hint {
+  color: #bbb;
+  font-style: italic;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* ── Rendered content typography ───────────────────────── */
+.preview-content h1,
+.preview-content h2,
+.preview-content h3,
+.preview-content h4,
+.preview-content h5,
+.preview-content h6 {
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  margin: 1.4em 0 0.5em;
+  line-height: 1.3;
+  color: #111;
+}
+
+.preview-content h1 { font-size: 1.8em; border-bottom: 2px solid #e0dfd8; padding-bottom: 6px; }
+.preview-content h2 { font-size: 1.45em; border-bottom: 1px solid #e8e7e0; padding-bottom: 4px; }
+.preview-content h3 { font-size: 1.2em; }
+
+.preview-content p {
+  margin: 0.75em 0;
+}
+
+.preview-content ul,
+.preview-content ol {
+  margin: 0.6em 0 0.6em 1.6em;
+}
+
+.preview-content li {
+  margin: 0.3em 0;
+}
+
+.preview-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.88em;
+  background: #f0efe8;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+.preview-content pre {
+  background: #f4f3ec;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 1em 0;
+  font-size: 0.9em;
+}
+
+.preview-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.preview-content blockquote {
+  border-left: 4px solid #c0beb6;
+  margin: 1em 0;
+  padding: 4px 16px;
+  color: #555;
+  background: #f9f8f4;
+}
+
+.preview-content strong { font-weight: bold; }
+.preview-content em     { font-style: italic; }
+
+.preview-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 0.93em;
+}
+
+.preview-content th,
+.preview-content td {
+  border: 1px solid #d0cfc8;
+  padding: 7px 12px;
+  text-align: left;
+}
+
+.preview-content th {
+  background: #f0efe8;
+  font-weight: bold;
+}
+
+/* ── KaTeX display equations ───────────────────────────── */
+.preview-content .katex-display {
+  margin: 1em 0;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+/* ── Responsive: stack on narrow screens ────────────────── */
+@media (max-width: 640px) {
+  .workspace {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .divider {
+    width: 100%;
+    height: 4px;
+    cursor: row-resize;
+  }
+
+  .pane-input textarea {
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid #d0cfc8;
+  }
+
+  .preview-content {
+    height: auto;
+    min-height: 40vh;
+  }
+
+  .app-title { display: none; }
+}
