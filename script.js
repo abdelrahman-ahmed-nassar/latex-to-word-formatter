@@ -23,6 +23,16 @@ function preprocessText(text) {
   // Normalise Windows line endings
   text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
+  // ── Convert single newlines to double newlines ──
+  // AI output uses single newlines between sentences/paragraphs.
+  // Markdown only creates a new paragraph with a blank line between them.
+  // Strategy: replace every single \n (not already a blank line) with \n\n
+  // so marked treats each line break as a new paragraph.
+  // We do this BEFORE protecting math blocks so we don't double-space inside them.
+  text = text.replace(/([^\n])\n([^\n])/g, '$1\n\n$2');
+  // Run twice to catch consecutive single-newline pairs
+  text = text.replace(/([^\n])\n([^\n])/g, '$1\n\n$2');
+
   // ── Block math ($$...$$) spacing fixes ──
   // Ensure $$ is preceded by a blank line (or start of string)
   text = text.replace(/([^\n])([ \t]*\$\$)/g, '$1\n\n$2');
@@ -35,9 +45,7 @@ function preprocessText(text) {
   // Ensure blank line after closing $$
   text = text.replace(/(\n\s*\$\$)([^\n$])/g, '$1\n\n$2');
 
-  // ── Strip markdown-style bold/italic from inside $...$ / $$...$$ ──
-  // (AI sometimes wraps equations in **...**)
-  // We leave LaTeX delimiters alone; just remove stray ** around them
+  // ── Strip stray ** wrapping equations ──
   text = text.replace(/\*\*(\$\$[\s\S]*?\$\$)\*\*/g, '$1');
   text = text.replace(/\*\*(\$[^$\n]+?\$)\*\*/g, '$1');
 
@@ -61,9 +69,7 @@ function renderOutput() {
     // Configure marked to NOT mangle underscores inside math
     marked.setOptions({
       gfm: true,
-      breaks: false,
-      // Protect LaTeX delimiters from marked's emphasis parser
-      // by using a custom tokenizer extension
+      breaks: true,   // treat single \n as <br> for any remaining single line breaks
     });
 
     // Temporarily replace LaTeX delimiters with placeholders so
@@ -166,11 +172,17 @@ function buildWordHtml(bodyHtml) {
 <meta charset="UTF-8">
 <style>
   body { font-family: Georgia, serif; font-size: 12pt; line-height: 1.6; }
-  h1 { font-size: 20pt; } h2 { font-size: 16pt; } h3 { font-size: 13pt; }
+  h1 { font-size: 20pt; margin: 12pt 0 6pt; }
+  h2 { font-size: 16pt; margin: 10pt 0 5pt; }
+  h3 { font-size: 13pt; margin: 8pt 0 4pt; }
+  p  { margin: 6pt 0; }
+  br { mso-data-placement: same-cell; }
   code { font-family: 'Courier New', monospace; background: #f4f4f4; padding: 1px 4px; }
-  pre  { background: #f4f4f4; padding: 8px; }
-  blockquote { border-left: 4px solid #ccc; padding-left: 12px; color: #555; }
+  pre  { background: #f4f4f4; padding: 8px; white-space: pre-wrap; }
+  blockquote { border-left: 4px solid #ccc; padding-left: 12px; color: #555; margin: 6pt 0; }
   table { border-collapse: collapse; } th, td { border: 1px solid #999; padding: 4px 8px; }
+  ul, ol { margin: 4pt 0 4pt 20pt; }
+  li { margin: 2pt 0; }
 </style>
 </head>
 <body>${bodyHtml}</body>
